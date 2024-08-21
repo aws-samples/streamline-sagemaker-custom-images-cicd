@@ -1,0 +1,118 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ecr:SetRepositoryPolicy",
+                "ecr:CompleteLayerUpload",
+                "ecr:BatchDeleteImage",
+                "ecr:UploadLayerPart",
+                "ecr:DeleteRepositoryPolicy",
+                "ecr:InitiateLayerUpload",
+                "ecr:DeleteRepository",
+                "ecr:PutImage"
+            ],
+            "Resource": [
+                "arn:aws:ecr:*:*:repository/*sagemaker*"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "sns:Subscribe",
+                "sns:CreateTopic",
+                "sns:Publish"
+            ],
+            "Resource": [
+                "arn:aws:sns:*:*:*SageMaker*",
+                "arn:aws:sns:*:*:*Sagemaker*",
+                "arn:aws:sns:*:*:*sagemaker*"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "iam:PassRole"
+            ],
+            "Resource": "arn:aws:iam::*:role/*",
+            "Condition": {
+                "StringEquals": {
+                    "iam:PassedToService": "sagemaker.amazonaws.com"
+                }
+            }
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "sagemaker:ListTags"
+            ],
+            "Resource": [
+                "arn:aws:sagemaker:*:*:user-profile/*"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "cloudformation:ListStackResources"
+            ],
+            "Resource": "arn:aws:cloudformation:*:*:stack/SC-*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "kms:Encrypt",
+                "kms:Decrypt",
+                "kms:ReEncryptFrom",
+                "kms:ReEncryptTo",
+                "kms:GenerateDataKey*",
+                "kms:DescribeKey"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "kms:CreateGrant",
+                "kms:ListGrants",
+                "kms:RevokeGrant"
+            ],
+            "Resource": "*",
+            "Condition": {
+                "Bool": {
+                    "kms:GrantIsForAWSResource": true
+                }
+            }
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "batch:ListJobs",
+                "batch:DeregisterJobDefinition",
+                "batch:DescribeComputeEnvironments",
+                "batch:DescribeJobDefinitions",
+                "batch:DescribeJobQueues",
+                "batch:DescribeJobs",
+                "batch:DeregisterJobDefinition",
+                "batch:RegisterJobDefinition",
+                "batch:SubmitJob",
+                "batch:UpdateComputeEnvironment"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ssm:DescribeParameters"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ssm:GetParameters"
+            ],
+            "Resource": "arn:aws:ssm:${region}:${accountId}:parameter/wb/*"
+        }        
+    ]
+}

@@ -1,0 +1,23 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "IamPassRoleAccess",
+            "Effect": "Deny",
+            "Action": [
+                "iam:PassRole",
+                "iam:AssumeRole"
+            ],
+            "NotResource": [
+                "arn:aws:iam::${accountId}:role/${pipelinerole}",
+                "arn:aws:iam::${accountId}:role/${pipelinerole}/*"
+            ]
+        },
+        {
+            "Sid": "CdkCreationAccess",
+            "Effect": "Allow",
+            "Action": "*",
+            "Resource": "*"
+        }
+    ]
+}

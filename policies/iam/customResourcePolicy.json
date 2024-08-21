@@ -1,0 +1,166 @@
+{
+    "Id": "SagemakerKeyPolicy",
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "sagemaker:*Lifecycle*",
+                "sagemaker:Describe*",
+                "sagemaker:List*",
+                "sagemaker:Get*",
+                "sagemaker:UpdateDomain",
+                "sagemaker:*AppImageConfig*",
+                "sagemaker:CreateUserProfile"
+            ],
+            "Resource": [
+                "arn:aws:sagemaker:${region}:${accountId}:*"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:getObject",
+                "s3:ListBucket",
+                "s3:GetBucketPolicy",
+                "s3:PutBucketPolicy"
+            ],
+            "Resource": [
+                "*"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "sagemaker:*Space*",
+                "sagemaker:Describe*",
+                "sagemaker:List*",
+                "sagemaker:Get*",
+                "sagemaker:UpdateDomain"
+            ],
+            "Resource": [
+                "arn:aws:sagemaker:${region}:${accountId}:*"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ecr:Get*",
+                "ecr:List*",
+                "ecr:Describe*",
+                "ecr:BatchGetImage",
+                "ecr:BatchCheckLayerAvailability"
+            ],
+            "Resource": [
+                "arn:aws:ecr:${region}:${accountId}:repository/*"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ecr:GetAuthorizationToken",
+                "elasticfilesystem:DescribeFileSystems",
+                "elasticfilesystem:DescribeMountTargets",
+                "sso:CreateApplicationAssignment",
+                "sso:DeleteApplicationAssignment"
+            ],
+            "Resource": [
+                "*"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "kms:CreateGrant",
+                "kms:ListGrants",
+                "kms:RevokeGrant",
+                "kms:GetKeyPolicy",
+                "kms:PutKeyPolicy"
+            ],
+            "Resource": [
+                "*"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "iam:ListRole*",
+                "iam:ListPolic*",
+                "iam:GetRole*",
+                "iam:GetPolic*"
+            ],
+            "Resource": [
+                "*"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+            ],
+            "Resource": [
+                "*"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ec2:CreateKeyPair",
+                "ec2:DeleteKeyPair",
+                "ec2:DescribeKeyPairs"
+            ],
+            "Resource": [
+                "*"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "secretsmanager:CreateSecret",
+                "secretsmanager:DeleteSecret",
+                "secretsmanager:UpdateSecret",
+                "secretsmanager:PutSecretValue",
+                "secretsmanager:Get*",
+                "secretsmanager:Describe*",
+                "secretsmanager:List*"
+            ],
+            "Resource": [
+                "*"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "cloudfront:CreatePublicKey",
+                "cloudfront:DeletePublicKey",
+                "cloudfront:UpdatePublicKey",
+                "cloudfront:GetPublicKey",
+                "cloudfront:ListPublicKeys"
+            ],
+            "Resource": [
+                "*"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "lambda:ListLayerVersions",
+                "lambda:GetLayerVersion"
+            ],
+            "Resource": [
+                "*"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "iam:PassRole"
+            ],
+            "Resource": [
+                "arn:aws:iam::${accountId}:role/sagemaker*"
+            ]
+        }
+    ]
+}

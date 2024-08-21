@@ -1,0 +1,13 @@
+version: 0.2
+env:
+  shell: bash
+phases:
+  build:
+    commands:
+      - pip --version
+      - python --version
+      - pip install sagemaker-studio-image-build
+      - bash scripts/ecr.sh
+artifacts:
+  files:
+    - '**/*'

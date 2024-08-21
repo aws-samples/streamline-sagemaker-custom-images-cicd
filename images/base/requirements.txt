@@ -1,0 +1,8 @@
+boto3
+pandas
+pytest
+numpy
+scipy>=1.7.0
+zarr
+anndata
+h5py

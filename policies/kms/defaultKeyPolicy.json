@@ -1,0 +1,52 @@
+{
+    "Id": "SagemakerKeyPolicy",
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "AccountAdminKeyAdminAccess",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": [
+                    "${keyAdmins}"
+                ]
+            },
+            "Action": [
+                "kms:Create*",
+                "kms:Describe*",
+                "kms:Enable*",
+                "kms:List*",
+                "kms:Put*",
+                "kms:Update*",
+                "kms:Revoke*",
+                "kms:Disable*",
+                "kms:Get*",
+                "kms:Delete*",
+                "kms:TagResource",
+                "kms:UntagResource",
+                "kms:ScheduleKeyDeletion",
+                "kms:CancelKeyDeletion"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "AccountAdminAttachPersistentResources",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": [
+                    "${keyAdmins}"
+                ]
+            },
+            "Action": [
+                "kms:CreateGrant",
+                "kms:ListGrants",
+                "kms:RevokeGrant"
+            ],
+            "Resource": "*",
+            "Condition": {
+                "Bool": {
+                    "kms:GrantIsForAWSResource": "true"
+                }
+            }
+        }
+    ]
+}

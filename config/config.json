@@ -1,0 +1,32 @@
+{
+  "environment": "dev",
+  "tags": [
+    {
+      "key": "Name",
+      "value": "SagemakerCustomImageStack"
+    }
+  ],
+  "sagemakerConfig": {
+    "domains": [
+      {
+        "domainName": "team-ds",
+        "appNetworkAccessType": "VpcOnly",
+        "defaultExecutionPolicyLocation": "policies/iam/dsDomainPolicy.json",
+        "defaultJupyterLabInstanceType": "ml.m5.large",
+        "allowedInstanceTypes": ["ml.t3.*", "ml.m5.*"],
+        "users": ["Jane", "John", "Alex"],
+        "customImages": ["jlab"]
+      }
+    ],
+    "images": [
+      {
+        "repositoryName": "sagemakerkernels-image-repo",
+        "tags": ["jlab"]
+      }
+    ]
+  },
+  "pipelineRoleName": "research-platform-dev-role",
+  "defaultKeyAdmins": [
+    "arn:aws:iam::${accountId}:role/cdk-hnb659fds-cfn-exec-role-${accountId}-${region}"
+  ]
+}

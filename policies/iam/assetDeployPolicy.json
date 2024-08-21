@@ -1,0 +1,54 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:PutObject",
+                "s3:GetObject",
+                "s3:AbortMultipartUpload",
+                "s3:GetBucketCORS",
+                "s3:ListBucket",
+                "s3:PutBucketCORS",
+                "s3:DeleteObject",
+                "s3:GetBucketAcl",
+                "s3:GetBucketLocation",
+                "s3:PutObjectAcl"
+            ],
+            "Resource": [
+                "arn:aws:s3:::${accountId}-sagemaker-staging",
+                "arn:aws:s3:::${accountId}-sagemaker-staging/notebooks*",
+                "arn:aws:s3:::cdk-hnb659fds-assets-${accountId}-${region}",
+                "arn:aws:s3:::cdk-hnb659fds-assets-${accountId}-${region}/*"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "logs:CreateLogDelivery",
+                "logs:CreateLogStream",
+                "logs:GetLogDelivery",
+                "logs:UpdateLogDelivery",
+                "logs:DeleteLogDelivery",
+                "logs:ListLogDeliveries",
+                "logs:PutLogEvents",
+                "logs:PutResourcePolicy",
+                "logs:DescribeResourcePolicies",
+                "logs:DescribeLogGroups"
+            ],
+            "Resource": "arn:aws:logs:${region}:${accountId}:log-group:*:log-stream:*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "kms:Encrypt",
+                "kms:Decrypt",
+                "kms:ReEncryptFrom",
+                "kms:ReEncryptTo",
+                "kms:GenerateDataKey*",
+                "kms:DescribeKey"
+            ],
+            "Resource": "arn:aws:kms:${region}:${accountId}:key/*"
+        }
+    ]
+}

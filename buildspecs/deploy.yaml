@@ -1,0 +1,13 @@
+version: 0.1
+env:
+  shell: bash
+phases:
+  install:
+    commands:
+      - npm install
+  build:
+    commands:
+      - echo "Building template..."
+      - npm run build
+      - echo -e "\n----------------------------------------\nSagemaker Stack CDK Deploy\n----------------------------------------\n"
+      - npx aws-cdk deploy SagemakerImageStack --require-approval never

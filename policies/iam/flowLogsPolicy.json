@@ -1,0 +1,24 @@
+{
+    "Id": "SagemakerKeyPolicy",
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "S3FullAccess",
+            "Effect": "Allow",
+            "Action": [
+                "logs:CreateLogStream",
+                "logs:DescribeLogStreams",
+                "logs:PutLogEvents"
+            ],
+            "Resource": "arn:aws:logs:${region}:${accountId}:log-group:/vpc-flow-logs:*"
+        },
+        {
+            "Sid": "PassRole",
+            "Effect": "Allow",
+            "Action": [
+                "iam:PassRole"
+            ],
+            "Resource": "arn:aws:iam::${accountId}:role/vpc-flow-logs-role"
+        }
+    ]
+}

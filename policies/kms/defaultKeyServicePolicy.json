@@ -1,0 +1,40 @@
+[
+    {
+        "Sid": "Allow use of the key",
+        "Effect": "Allow",
+        "Principal": {
+            "Service": [
+                "${service}"
+            ]
+        },
+        "Action": [
+            "kms:Encrypt",
+            "kms:Decrypt",
+            "kms:ReEncryptFrom",
+            "kms:ReEncryptTo",
+            "kms:GenerateDataKey*",
+            "kms:DescribeKey"
+        ],
+        "Resource": "*"
+    },
+    {
+        "Sid": "Allow attachment of persistent resources",
+        "Effect": "Allow",
+        "Principal": {
+            "Service": [
+                "${service}"
+            ]
+        },
+        "Action": [
+            "kms:CreateGrant",
+            "kms:ListGrants",
+            "kms:RevokeGrant"
+        ],
+        "Resource": "*",
+        "Condition": {
+            "Bool": {
+                "kms:GrantIsForAWSResource": true
+            }
+        }
+    }
+]
