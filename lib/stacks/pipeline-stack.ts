@@ -1,13 +1,13 @@
 import * as cdk from "aws-cdk-lib";
 import { Construct } from "constructs";
-import { Repository, IRepository } from "aws-cdk-lib/aws-ecr";
+import { Repository, IRepository, RepositoryEncryption } from "aws-cdk-lib/aws-ecr";
 import {
   PipelineProject,
   ComputeType,
   BuildSpec,
   LinuxBuildImage,
   Cache,
-  LocalCacheMode,
+  LocalCacheMode
 } from "aws-cdk-lib/aws-codebuild";
 import {
   Role,
@@ -42,6 +42,12 @@ export class PipelineStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
+    //create a new kms key
+    const kmsKey = new cdk.aws_kms.Key(this, "KmsKey", {
+      enableKeyRotation: true,
+      removalPolicy: RemovalPolicy.DESTROY
+    });
+
     // Create SSM parameter with VPC id value in env variable
     const vpcIdSsmParam = new ssm.StringParameter(this, "VpcIdSsmParam", {
       parameterName: "/sagemaker/vpc/id",
@@ -55,12 +61,16 @@ export class PipelineStack extends cdk.Stack {
     const pipelineAccount = this.account;
     const environment = "dev";
     const pipelineRoleName: string = `${pipelineName}-role`;
+    //create
 
     // Create ECR repository for pipeline images, This repo holds a custom docker image used for pipelines
     this.repo = new Repository(this, "EcrRepository", {
       repositoryName: "sagemakerkernels-image-repo",
       imageScanOnPush: true,
       removalPolicy: removalPolicy,
+      encryption: RepositoryEncryption.KMS,
+      encryptionKey: kmsKey,
+      imageTagMutability: cdk.aws_ecr.TagMutability.IMMUTABLE
     });
 
     let pipelineRole: Role;
@@ -101,6 +111,7 @@ export class PipelineStack extends cdk.Stack {
       //logGroupName: `/${pipelineName}-pipeline-logs`,
       retention: RetentionDays.ONE_WEEK,
       removalPolicy: removalPolicy,
+      encryptionKey: kmsKey
     });
 
     const ecrBuildProject: PipelineProject = new PipelineProject(

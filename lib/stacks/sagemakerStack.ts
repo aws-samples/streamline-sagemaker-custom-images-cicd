@@ -22,7 +22,6 @@ export class SagemakerInfraStack extends Stack {
   readonly dataBucket: PlatformBucket;
   readonly customResourceRole: iam.IRole;
   readonly pipelineRole: iam.IRole;
-  readonly stagingBucket?: PlatformBucket;
 
   constructor(scope: Construct, id: string, props: StackProps) {
     super(scope, id, props);
@@ -33,13 +32,6 @@ export class SagemakerInfraStack extends Stack {
       "PipelineRole",
       `arn:aws:iam::${this.account}:role/${pipelineRoleName}`
     );
-
-    this.stagingBucket = new PlatformBucket(this, "StagingBucket", {
-      bucketName: `${this.account}-sagemaker-staging`,
-      accountId: this.account,
-      region: this.region,
-      keyUsers: [this.pipelineRole.roleArn],
-    });
 
     this.sagemakerDefaultRole = new SagemakerRole(this, "DefaultRole", {
       accountId: this.account,

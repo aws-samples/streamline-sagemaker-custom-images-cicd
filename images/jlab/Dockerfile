@@ -15,7 +15,7 @@ RUN apt update -y && \
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
     unzip -q awscliv2.zip && \
     ./aws/install
-RUN curl -s https://deb.nodesource.com/setup_18.x | sudo bash && \
+RUN curl -s https://deb.nodesource.com/setup_18.x | bash && \
     apt install nodejs -y  && \
     node -v
 
