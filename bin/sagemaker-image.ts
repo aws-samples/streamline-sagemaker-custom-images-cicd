@@ -18,7 +18,7 @@ if (!region)
   throw Error(
     "Region must be provided either in config.js file or as environment variable."
   );
-const accountId: string = CONFIG.accountId || process.env.AWS_ACCOUNT || "";
+const accountId: string = CONFIG.accountId || process.env.AWS_DEFAULT_ACCOUNT|| process.env.AWS_ACCOUNT || "";
 if (!accountId)
   throw Error(
     "Account ID must be provided either in config.js file or as environment variable."

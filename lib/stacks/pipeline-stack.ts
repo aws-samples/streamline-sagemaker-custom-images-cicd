@@ -45,8 +45,11 @@ export class PipelineStack extends cdk.Stack {
     //create a new kms key
     const kmsKey = new cdk.aws_kms.Key(this, "KmsKey", {
       enableKeyRotation: true,
-      removalPolicy: RemovalPolicy.DESTROY
+      removalPolicy: RemovalPolicy.DESTROY,
+
     });
+    kmsKey.grantEncryptDecrypt(new ServicePrincipal("logs.amazonaws.com"));
+    kmsKey.grantEncryptDecrypt(new ServicePrincipal("ecr.amazonaws.com"));
 
     // Create SSM parameter with VPC id value in env variable
     const vpcIdSsmParam = new ssm.StringParameter(this, "VpcIdSsmParam", {
@@ -114,6 +117,8 @@ export class PipelineStack extends cdk.Stack {
       encryptionKey: kmsKey
     });
 
+    this.logGroup.node.addDependency(kmsKey)
+
     const ecrBuildProject: PipelineProject = new PipelineProject(
       this,
       "ContainerBuildProjectECR",
@@ -173,7 +178,7 @@ export class PipelineStack extends cdk.Stack {
       runOrder: 1,
       output: sourceArtifact,
       branch: "main",
-      repo: "sagemaker-custom-image",
+      repo: "streamline-sagemaker-custom-images-cicd",
       connectionArn: process.env.CODESTAR_CONNECTION_ARN
         ? process.env.CODESTAR_CONNECTION_ARN
         : "codestar",
