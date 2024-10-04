@@ -10,9 +10,7 @@ RUN apt update -y && \
     apt remove awscli && \
     pip3 install ipykernel && \
     pip3 install jupyterlab && \
-    python3 -m ipykernel install && \
-    echo "Test change.."
-
+    python3 -m ipykernel install
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
     unzip -q awscliv2.zip && \
     ./aws/install

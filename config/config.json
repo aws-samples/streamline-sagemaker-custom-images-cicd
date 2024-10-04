@@ -15,13 +15,13 @@
         "defaultJupyterLabInstanceType": "ml.m5.large",
         "allowedInstanceTypes": ["ml.t3.*", "ml.m5.*"],
         "users": ["Jane", "John", "Alex"],
-        "customImages": ["jlab"]
+        "customImages": ["jlab", "base"]
       }
     ],
     "images": [
       {
         "repositoryName": "sagemakerkernels-image-repo",
-        "tags": ["jlab"]
+        "tags": ["jlab", "base"]
       }
     ]
   },

@@ -122,7 +122,6 @@ get_scan_result () {
 }
 
 scan_sagemaker_images () {
-    pwd
     tagArray=$(cat config/config.json | jq -r '.sagemakerConfig.images[].tags' | jq -c '.[]')
     cd "$working_dir/$sagemaker_dir"
     docker_login $CUSTOM_IMAGE_REPO
