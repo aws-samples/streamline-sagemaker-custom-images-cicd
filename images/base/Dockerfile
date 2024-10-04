@@ -1,19 +1,21 @@
+FROM public.ecr.aws/amazonlinux/amazonlinux:2
 
-FROM public.ecr.aws/sagemaker/sagemaker-distribution:1.6.0-cpu
 ARG NB_USER="sagemaker-user"
-ARG NB_UID=1000
-ARG NB_GID=100
+ARG NB_UID="1000"
+ARG NB_GID="100"
+RUN yum update -y && \
+yum install python3 python3-pip shadow-utils -y && \
+yum clean all
 
-ENV MAMBA_USER=$NB_USER
+RUN yum install --assumeyes python3 shadow-utils && \
+    useradd --create-home --shell /bin/bash --gid "${NB_GID}" --uid ${NB_UID} ${NB_USER} && \
+    yum clean all && \
+    python3 -m pip install jupyterlab
 
-USER root
-
-RUN apt-get update
-RUN micromamba install sagemaker-inference --freeze-installed --yes --channel conda-forge --name base
-COPY base/requirements.txt requirements.txt
-#COPY requirements.txt requirements.txt
-RUN python3 -m pip install --quiet -r requirements.txt
-USER $MAMBA_USER
-
-ENTRYPOINT ["jupyter-lab"]
-CMD ["--ServerApp.ip=0.0.0.0", "--ServerApp.port=8888", "--ServerApp.allow_origin=*", "--ServerApp.token=''", "--ServerApp.base_url=/jupyterlab/default"]
+RUN python3 -m pip install --upgrade pip
+RUN python3 -m pip install --upgrade urllib3==1.26.6
+USER ${NB_UID}
+CMD jupyter lab --ip 0.0.0.0 --port 8888 \
+  --ServerApp.base_url="/jupyterlab/default" \
+  --ServerApp.token='' \
+  --ServerApp.allow_origin='*'

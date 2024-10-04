@@ -72,8 +72,7 @@ export class PipelineStack extends cdk.Stack {
       imageScanOnPush: true,
       removalPolicy: removalPolicy,
       encryption: RepositoryEncryption.KMS,
-      encryptionKey: kmsKey,
-      imageTagMutability: cdk.aws_ecr.TagMutability.IMMUTABLE
+      encryptionKey: kmsKey
     });
 
     let pipelineRole: Role;
@@ -140,6 +139,7 @@ export class PipelineStack extends cdk.Stack {
             prefix: "ECR",
           },
         },
+        timeout: cdk.Duration.minutes(120),
       }
     );
 
