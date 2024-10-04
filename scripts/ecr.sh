@@ -53,6 +53,16 @@ echo_banner () {
     set -x # reset debug
 }
 
+get_repo_name () {
+    repo_uri=$1
+
+    repo_arr=$(echo $repo_uri | tr '/' ' ')
+    repo_arr=($repo_arr)
+    repo_name="${repo_arr[1]}"
+
+    echo $repo_name
+}
+
 wait_scan_status () {
     repo_name=$1
     tag=$2
@@ -112,8 +122,9 @@ get_scan_result () {
 }
 
 scan_sagemaker_images () {
-    cd "$working_dir/$sagemaker_dir"
+    pwd
     tagArray=$(cat config/config.json | jq -r '.sagemakerConfig.images[].tags' | jq -c '.[]')
+    cd "$working_dir/$sagemaker_dir"
     docker_login $CUSTOM_IMAGE_REPO
     repo_name=$(get_repo_name $CUSTOM_IMAGE_REPO)
     for tag in $tagArray; do
