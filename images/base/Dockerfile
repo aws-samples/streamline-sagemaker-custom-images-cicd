@@ -4,10 +4,13 @@ ARG NB_USER="sagemaker-user"
 ARG NB_UID="1000"
 ARG NB_GID="100"
 RUN yum update -y
-RUN yum install —y python3 shadow-utils
+# install python 3
+RUN yum install python3 python3-pip shadow-utils -y
+RUN python3 --version
+RUN pip3 --version
 RUN useradd —create-home —shell /bin/bash —gid "${NB_GID}" —uid ${NB_UID} ${NB_USER}
 # yum clean all 
-RUN python3 -m pip install —upgrade pip
+#RUN python3 -m pip install —upgrade pip
 RUN python3 -m pip install —upgrade urllib3==1.26.6
 RUN python3 -m pip install jupyterlab
 
