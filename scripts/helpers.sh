@@ -6,7 +6,6 @@ working_dir=$(pwd)
 workflow_dir="CDM/BatchWorkflows"
 sagemaker_dir="images"
 credentials_path="$working_dir/session.sh"
-#CUSTOM_IMAGE_REPO_ROLE=arn:aws:iam::$AWS_ACCOUNT:role/sagemakerkernels-image-repo-role
 CUSTOM_IMAGE_REPO=$AWS_ACCOUNT.dkr.ecr.$AWS_REGION.amazonaws.com/sagemakerkernels-image-repo
 CUSTOM_IMAGE_REPO_NAME=sagemakerkernels-image-repo
 pipeline_dir="pipeline/image"
@@ -22,32 +21,6 @@ docker_login () {
             --username AWS \
             --password-stdin $ecr_repo
 }
-
-# get_workflows () {
-#     ls "$working_dir/$workflow_dir/Images"
-# }
-
-# get_updated_workflows () {
-#     #     git diff --name-only HEAD~1..HEAD | \      # Compare head with previous commit
-#     #         cut -b 1- | grep "BatchWorkflows" | \  # Only track Batchworkflows
-#     #         cut -d/ -f4 | \                        # get the algorithm name only
-#     #         cut -f 1 -d '.' | \                    # remove the extension
-#     #         sed "s/GPU//g"  | \                    # remove the "GPU" indicator
-#     #         uniq                                   # return unique list
-#     local_dir=$(pwd)
-#     cd $working_dir
-#     git diff --name-only HEAD~1..HEAD | \
-#         cut -b 1- | grep "BatchWorkflows" | \
-#         cut -d/ -f4 | \
-#         cut -f 1 -d '.' | \
-#         sed "s/GPU//g"  | \
-#         uniq
-#     cd $local_dir
-# }
-
-# get_sagemaker_images () {
-#     ls "$working_dir/$sagemaker_dir/"
-# }
 
 assume_role () {
     role_arn=$1
@@ -78,13 +51,3 @@ echo_banner () {
     echo ""
     set -x # reset debug
 }
-
-# get_repo_name () {
-#     repo_uri=$1
-
-#     repo_arr=$(echo $repo_uri | tr '/' ' ')
-#     repo_arr=($repo_arr)
-#     repo_name="${repo_arr[1]}"
-
-#     echo $repo_name
-# }
