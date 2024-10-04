@@ -8,7 +8,7 @@ RUN yum update -y
 RUN yum install python3 python3-pip shadow-utils -y
 RUN python3 --version
 RUN pip3 --version
-RUN useradd —-create-home —s /bin/bash —g "${NB_GID}" —u ${NB_UID} ${NB_USER}
+RUN useradd —-create-home —s /bin/bash —g 100 —u 1000 sagemaker-user
 # yum clean all 
 #RUN python3 -m pip install —upgrade pip
 RUN python3 -m pip install —upgrade urllib3==1.26.6
