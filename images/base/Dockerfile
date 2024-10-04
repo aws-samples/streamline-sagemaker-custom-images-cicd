@@ -1,5 +1,5 @@
 
-FROM public.ecr.aws/sagemaker/sagemaker-distribution:1.6.0-cpu
+FROM public.ecr.aws/sagemaker/sagemaker-distribution:1.9.0-cpu
 ARG NB_USER="sagemaker-user"
 ARG NB_UID=1000
 ARG NB_GID=100
