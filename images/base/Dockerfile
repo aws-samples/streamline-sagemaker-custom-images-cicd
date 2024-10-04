@@ -17,7 +17,6 @@ RUN useradd --create-home \
             sagemaker-user
 RUN pip3 install jupyterlab urllib3==1.26.6
 # Set the working directory to the sagemaker-user's home
-WORKDIR /home/sagemaker-user
 USER 1000
 CMD jupyter lab —ip 0.0.0.0 —port 8888 \
 --ServerApp.base_url="/jupyterlab/default" \
