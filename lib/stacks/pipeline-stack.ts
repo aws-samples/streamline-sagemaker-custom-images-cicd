@@ -139,6 +139,7 @@ export class PipelineStack extends cdk.Stack {
             prefix: "ECR",
           },
         },
+        timeout: cdk.Duration.minutes(120),
       }
     );
 
