@@ -14,16 +14,6 @@ RUN yum install --assumeyes python3 shadow-utils && \
 
 RUN python3 -m pip install --upgrade pip
 RUN python3 -m pip install --upgrade urllib3==1.26.6
-
-
-# Create the sagemaker-user
-#RUN useradd --create-home \
- #           --shell /bin/bash \
- #           --gid 100 \
- #           --uid 1000 \
-  #          ${NB_USER}
-#RUN pip3 install jupyterlab urllib3==1.26.6
-# Set the working directory to the sagemaker-user's home
 USER ${NB_UID}
 CMD jupyter lab --ip 0.0.0.0 --port 8888 \
   --ServerApp.base_url="/jupyterlab/default" \
