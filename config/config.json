@@ -23,7 +23,7 @@
           "Alex"
         ],
         "customImages": [
-          "base"
+          "jlab"
         ]
       }
     ],
@@ -31,7 +31,7 @@
       {
         "repositoryName": "sagemakerkernels-image-repo",
         "tags": [
-          "base"
+          "jlab"
         ]
       }
     ]
