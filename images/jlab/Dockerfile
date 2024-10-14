@@ -5,17 +5,22 @@ ARG NB_UID="1000"
 ARG NB_GID="100"
 
 RUN apt-get update -y && \
+    apt-get upgrade -y && \
     apt-get install -y python3 python3-pip unzip sudo cron curl && \
     apt-get clean all && \
-    apt-get remove awscli && \
-    pip3 install ipykernel && \
-    pip3 install jupyterlab && \
+    apt-get autoremove -y && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN pip3 install --no-cache-dir --upgrade pip && \
+    pip3 install --no-cache-dir ipykernel jupyterlab && \
     python3 -m ipykernel install
+
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
     unzip -q awscliv2.zip && \
     ./aws/install
-RUN curl -s https://deb.nodesource.com/setup_18.x | bash && \
-    apt-get install nodejs -y  && \
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y nodejs && \
+    npm install -g npm@latest && \
     node -v
 
 COPY jlab/requirements.txt requirements.txt
