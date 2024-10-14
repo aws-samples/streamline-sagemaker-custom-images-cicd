@@ -1,4 +1,4 @@
-FROM public.ecr.aws/ubuntu/ubuntu:22.04
+FROM public.ecr.aws/docker/library/ubuntu:24.10
 
 ARG NB_USER="sagemaker-user"
 ARG NB_UID="1000"
