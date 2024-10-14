@@ -6,8 +6,7 @@ ARG NB_GID="100"
 
 # Update and install necessary packages
 RUN dnf update -y && \
-    dnf remove -y curl-minimal && \
-    dnf install -y python3 python3-pip unzip sudo cronie curl shadow-utils && \
+    dnf install -y python3 python3-pip unzip sudo cronie wget shadow-utils && \
     dnf clean all
 
 # Install and set up Python packages
@@ -16,10 +15,14 @@ RUN pip3 install --no-cache-dir --upgrade pip && \
     python3 -m ipykernel install
 
 # Install AWS CLI v2
-RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
-    unzip -q awscliv2.zip && \
+RUN wget -q "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" && \
+    unzip -q awscli-exe-linux-x86_64.zip && \
     ./aws/install && \
-    rm -rf aws awscliv2.zip
+    rm -rf aws awscli-exe-linux-x86_64.zip
+#RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
+#    unzip -q awscliv2.zip && \
+#    ./aws/install && \
+#    rm -rf aws awscliv2.zip
 
 # Install Node.js
 RUN dnf install -y nodejs npm && \
