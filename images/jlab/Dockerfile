@@ -10,8 +10,8 @@ RUN dnf update -y && \
     dnf clean all
 
 # Install and set up Python packages
-RUN pip3 install --no-cache-dir --upgrade pip && \
-    pip3 install --no-cache-dir ipykernel jupyterlab && \
+RUN python3 -m pip install --no-cache-dir --upgrade pip --user && \
+    python3 -m pip install --no-cache-dir ipykernel jupyterlab && \
     python3 -m ipykernel install
 
 # Install AWS CLI v2
@@ -19,10 +19,6 @@ RUN wget -q "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" && \
     unzip -q awscli-exe-linux-x86_64.zip && \
     ./aws/install && \
     rm -rf aws awscli-exe-linux-x86_64.zip
-#RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
-#    unzip -q awscliv2.zip && \
-#    ./aws/install && \
-#    rm -rf aws awscliv2.zip
 
 # Install Node.js
 RUN dnf install -y nodejs npm && \
@@ -31,7 +27,7 @@ RUN dnf install -y nodejs npm && \
 
 # Copy and install Python requirements
 COPY jlab/requirements.txt requirements.txt
-RUN pip3 install --no-cache-dir -r requirements.txt && \
+RUN python3 -m pip install --no-cache-dir -r requirements.txt && \
     rm requirements.txt
 
 # Create user
