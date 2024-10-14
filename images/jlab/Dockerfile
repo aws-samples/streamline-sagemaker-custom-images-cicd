@@ -6,7 +6,7 @@ ARG NB_GID="100"
 
 # Update and install necessary packages
 RUN dnf update -y && \
-    dnf install -y python3 python3-pip unzip sudo cron curl shadow-utils && \
+    dnf install -y python3 python3-pip unzip sudo cronie curl shadow-utils && \
     dnf clean all
 
 # Install and set up Python packages
