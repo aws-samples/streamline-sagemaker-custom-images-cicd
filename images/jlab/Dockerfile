@@ -1,13 +1,13 @@
-FROM public.ecr.aws/docker/library/ubuntu:24.04
+FROM public.ecr.aws/ubuntu/ubuntu:22.04
 
 ARG NB_USER="sagemaker-user"
 ARG NB_UID="1000"
 ARG NB_GID="100"
 
-RUN apt update -y && \
-    apt install -y python3 python3-pip unzip sudo cron curl && \
-    apt clean all && \
-    apt remove awscli && \
+RUN apt-get update -y && \
+    apt-get install -y python3 python3-pip unzip sudo cron curl && \
+    apt-get clean all && \
+    apt-get remove awscli && \
     pip3 install ipykernel && \
     pip3 install jupyterlab && \
     python3 -m ipykernel install
@@ -15,7 +15,7 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
     unzip -q awscliv2.zip && \
     ./aws/install
 RUN curl -s https://deb.nodesource.com/setup_18.x | bash && \
-    apt install nodejs -y  && \
+    apt-get install nodejs -y  && \
     node -v
 
 COPY jlab/requirements.txt requirements.txt
