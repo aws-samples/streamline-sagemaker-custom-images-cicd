@@ -26,7 +26,7 @@ RUN dnf update -y && \
 
 # Combine pip installations and cleanup
 COPY jlab/requirements.txt /tmp/requirements.txt
-RUN python3 -m pip install --no-cache-dir --upgrade pip && \
+RUN python3 -m pip install --no-cache-dir --upgrade pip --user && \
     python3 -m pip install --no-cache-dir ipykernel jupyterlab && \
     python3 -m pip install --no-cache-dir -r /tmp/requirements.txt && \
     python3 -m ipykernel install && \
