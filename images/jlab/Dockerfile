@@ -20,10 +20,21 @@ RUN wget -q "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" && \
     ./aws/install && \
     rm -rf aws awscli-exe-linux-x86_64.zip
 
-# Install Node.js
-RUN dnf install -y nodejs npm && \
-    npm install -g npm@latest && \
-    node -v
+# Replace the existing Node.js installation block with:
+ENV NODE_VERSION=20.12.2
+ENV NVM_DIR=/usr/local/nvm
+RUN mkdir -p $NVM_DIR
+
+# Install NVM and Node.js
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash && \
+    . "$NVM_DIR/nvm.sh" && \
+    nvm install $NODE_VERSION && \
+    nvm alias default $NODE_VERSION && \
+    nvm use $NODE_VERSION
+
+# Add Node and NPM to PATH
+ENV PATH="$NVM_DIR/versions/node/v${NODE_VERSION}/bin:${PATH}"
+    
 
 # Copy and install Python requirements
 COPY jlab/requirements.txt requirements.txt
