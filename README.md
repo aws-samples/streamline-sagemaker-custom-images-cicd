@@ -40,7 +40,7 @@ git clone [clone_url_of_forked_repo]
 6. Go to terminal and run below command to cd into repository directory
 
 ```bash
-  cd sagemaker-custom-image
+  cd streamline-sagemaker-custom-images-cicd
 ```
 
 7. Run below command to install all libraries from. npm
