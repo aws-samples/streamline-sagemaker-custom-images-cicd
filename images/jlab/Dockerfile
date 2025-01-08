@@ -6,7 +6,7 @@ ARG NB_GID="100"
 
 # Update and install necessary packages
 RUN dnf update -y && \
-    dnf install -y python3 python3-pip unzip sudo cronie wget shadow-utils && \
+    dnf install -y python3 python3-pip unzip sudo cronie wget shadow-utils tar && \
     dnf clean all
 
 # Install and set up Python packages
@@ -34,8 +34,6 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | b
 
 # Add Node and NPM to PATH
 ENV PATH="$NVM_DIR/versions/node/v${NODE_VERSION}/bin:${PATH}"
-    
-
 # Copy and install Python requirements
 COPY jlab/requirements.txt requirements.txt
 RUN python3 -m pip install --no-cache-dir -r requirements.txt && \
