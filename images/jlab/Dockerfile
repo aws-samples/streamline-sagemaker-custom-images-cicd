@@ -1,59 +1,55 @@
-FROM public.ecr.aws/amazonlinux/amazonlinux:2023
+# Use multi-stage build
+FROM public.ecr.aws/amazonlinux/amazonlinux:2023 as builder
 
+# Set ARGs and ENVs together
 ARG NB_USER="sagemaker-user"
 ARG NB_UID="1000"
 ARG NB_GID="100"
+ENV PYTHONUNBUFFERED=TRUE
+ENV PYTHONDONTWRITEBYTECODE=TRUE
 
-# Update and install necessary packages
+# Combine all dnf operations and cleanup in a single layer
 RUN dnf update -y && \
-    dnf install -y python3 python3-pip unzip sudo cronie wget shadow-utils tar && \
-    dnf clean all
-
-# Install and set up Python packages
-RUN python3 -m pip install --no-cache-dir --upgrade pip --user && \
-    python3 -m pip install --no-cache-dir ipykernel jupyterlab && \
-    python3 -m ipykernel install
-
-# Install AWS CLI v2
-RUN wget -q "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" && \
-    unzip -q awscli-exe-linux-x86_64.zip && \
-    ./aws/install && \
-    rm -rf aws awscli-exe-linux-x86_64.zip
-
-# Replace the existing Node.js installation block with:
-ENV NODE_VERSION=20.12.2
-ENV NVM_DIR=/usr/local/nvm
-RUN mkdir -p $NVM_DIR
-
-# Install NVM and Node.js
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash && \
-    . "$NVM_DIR/nvm.sh" && \
-    nvm install $NODE_VERSION && \
-    nvm alias default $NODE_VERSION && \
-    nvm use $NODE_VERSION
-
-# Add Node and NPM to PATH
-ENV PATH="$NVM_DIR/versions/node/v${NODE_VERSION}/bin:${PATH}"
-# Copy and install Python requirements
-COPY jlab/requirements.txt requirements.txt
-RUN python3 -m pip install --no-cache-dir -r requirements.txt && \
-    rm requirements.txt
-
-# Create user
-RUN useradd --create-home --shell /bin/bash --gid "${NB_GID}" --uid ${NB_UID} ${NB_USER} && \
-    echo "${NB_USER} ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
-
-# Clean up
-RUN dnf remove -y unzip && \
+    dnf install -y \
+    python3 \
+    python3-pip \
+    unzip \
+    sudo \
+    cronie \
+    wget \
+    shadow-utils \
+    tar \
+    nodejs \
+    npm && \
     dnf clean all && \
     rm -rf /var/cache/dnf
 
-ENV PYTHONUNBUFFERED=TRUE  
-ENV PYTHONDONTWRITEBYTECODE=TRUE  
+# Combine pip installations and cleanup
+COPY jlab/requirements.txt /tmp/requirements.txt
+RUN python3 -m pip install --no-cache-dir --upgrade pip && \
+    python3 -m pip install --no-cache-dir ipykernel jupyterlab && \
+    python3 -m pip install --no-cache-dir -r /tmp/requirements.txt && \
+    python3 -m ipykernel install && \
+    rm -f /tmp/requirements.txt
 
+# Combine AWS CLI installation steps
+RUN wget -q "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" && \
+    unzip -q awscli-exe-linux-x86_64.zip && \
+    ./aws/install && \
+    rm -rf aws awscli-exe-linux-x86_64.zip && \
+    npm install -g npm@latest && \
+    dnf remove -y unzip && \
+    dnf clean all
+
+# Create user and set permissions in one layer
+RUN useradd --create-home --shell /bin/bash --gid "${NB_GID}" --uid ${NB_UID} ${NB_USER} && \
+    echo "${NB_USER} ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
+# Set working directory and user
 WORKDIR /home/${NB_UID}
 USER ${NB_UID}
 
+# Set the default command
 CMD ["jupyter", "lab", "--ip", "0.0.0.0", "--port", "8888", \
      "--ServerApp.base_url=/jupyterlab/default", \
      "--ServerApp.token=''", \
